@@ -1,14 +1,28 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { Link } from "react-router-dom";
 import * as yup from "yup";
 import { useRegisterMutation } from "../../store/service/endpoints/auth.endpoints";
+import { useNavigate} from "react-router-dom";
+
 
 const LoginPage = () => {
   const [fun, data] = useRegisterMutation();
+  const nav = useNavigate();
   const [formSubmitted, setFormSubmitted] = useState(false);
 
-  console.log(fun, data);
+  // console.log(fun, data);
+  useEffect(() => {
+    if(data.error){
+      console.log('error');
+    }else if(data.data){
+      nav('/');
+    }
+  },[data])
+
+
+
+
   const initialValue = {
     name: "",
     email: "",
@@ -48,20 +62,20 @@ const LoginPage = () => {
           validateOnChange={false}
         >
           {({ isSubmitting }) => (
-            <Form className="Form">
-              <div className=" flex items-center mb-3 justify-between">
-                <h1 className="Header">Sign Up</h1>
-                <p className=" text-sm text-slate-950 underline hover:text-slate-200">
+            <Form className=" bg-white shadow-lg  backdrop-blur-sm rounded-lg flex flex-col p-10">
+              <div className=" flex gap-3 items-center mb-5 justify-between">
+                <h1 className="text-xl font-sans font-semibold">Sign Up</h1>
+                <p className=" text-sm text-slate-950 underline hover:text-blue-600">
                   <Link to={"/"}>Already have an account?</Link>
                 </p>
               </div>
-              <label className=" text-sm text-slate-300" htmlFor="name">
+              <label className=" text-sm font-serif" htmlFor="name">
                 Enter your name
               </label>
               <Field
                 type="name"
                 name="name"
-                className="Field"
+                className="text-sm font-serif px-4 py-2 mb-5 rounded-lg border border-blue-400 focus:ring-2 outline-none"
                 placeholder="name"
               />
               <ErrorMessage
@@ -69,14 +83,14 @@ const LoginPage = () => {
                 name="name"
                 component="p"
               />
-              <label className=" text-sm text-slate-300" htmlFor="email">
+              <label className=" text-sm font-serif" htmlFor="email">
                 Enter your email
               </label>
 
               <Field
                 type="email"
                 name="email"
-                className="Field"
+                className="text-sm px-4 font-serif py-2 mb-5 rounded-lg border border-blue-400 focus:ring-2 outline-none"
                 placeholder="email"
               />
               <ErrorMessage
@@ -84,14 +98,14 @@ const LoginPage = () => {
                 name="email"
                 component="p"
               />
-              <label className=" text-sm text-slate-300" htmlFor="password">
+              <label className=" text-sm  font-serif" htmlFor="password">
                 Enter your password
               </label>
 
               <Field
                 type="password"
                 name="password"
-                className="Field"
+                className="text-sm px-4 py-2 font-serif mb-5 rounded-lg border border-blue-400 focus:ring-2 outline-none"
                 placeholder="password"
               />
               <ErrorMessage
@@ -100,16 +114,16 @@ const LoginPage = () => {
                 component="p"
               />
               <label
-                className=" text-sm text-slate-300"
+                className=" text-sm  font-serif"
                 htmlFor="password_confirmation"
               >
                 Confirm password
               </label>
 
               <Field
-                type="password_confirmation"
+                type="password"
                 name="password_confirmation"
-                className="Field"
+                className="text-sm px-4 py-2 mb-5 font-serif rounded-lg border border-blue-400 focus:ring-2 outline-none"
                 placeholder="password_confirmation"
               />
               <ErrorMessage
@@ -120,7 +134,7 @@ const LoginPage = () => {
               <button
                 disabled={isSubmitting || formSubmitted}
                 type="submit"
-                className="Button mt-3 "
+                className="border font-serif hover:bg-blue-700 hover:text-white bg-blue-600 rounded-lg px-4 py-2 border-blue-400 focus:ring-2 mt-3 "
               >
                 {isSubmitting ? (
                   <div className="flex gap-2 items-center justify-center">
