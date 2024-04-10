@@ -4,11 +4,12 @@ import { Link } from "react-router-dom";
 import * as yup from "yup";
 import { useLoginMutation } from "../../store/service/endpoints/auth.endpoints";
 import AuthGuard from "../../components/Guard/Auth.Guard";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
+import { toast} from 'sonner'
 
 
 const LoginPage = () => {
-  const [fun, data] = useLoginMutation();
+  const [loginFun, data] = useLoginMutation();
   const nav = useNavigate();
   const [formSubmitted, setFormSubmitted] = useState(false);
   // console.log(fun, data);
@@ -28,16 +29,18 @@ const LoginPage = () => {
   });
   const handleSubmit = async (values, { setSubmitting }) => {
     if (!formSubmitted) {
-      await fun(values);
+      await loginFun(values);
       setFormSubmitted(true);
     }
+    toast.success("You have login successfully");
+
     setSubmitting(false);
   };
   useEffect(() => {
-    if(data?.data?.success){
-      nav('/home');
+    if (data?.data?.success) {
+      nav("/home");
     }
-  },[data])
+  }, [data]);
   return (
     <AuthGuard check={data?.data?.success} token={data?.data?.token}>
       <div>
